@@ -146,15 +146,26 @@ function showHome() {
     main.innerHTML = "<h2>Welcome to ESB's Toolbox</h2>";
 }
 
+function CreateGameButton(name, url) {
+    CreateButton(name, () => {
+        window.location.href = "play.html?game=" + encodeURIComponent(url);
+    });
+}
+
 function showGames() {
     const main = document.getElementById("main");
     main.innerHTML = "<h2>Games</h2>";
 
-    CreateButton("Run 3", () => LoadGame("https://ubg98.github.io/run3/"));
-    CreateButton("Drive Mad", () => LoadGame("https://ubg98.github.io/drive-mad/"));
-    CreateButton("Slope", () => LoadGame("https://ubg100.github.io/slope/"));
-    CreateButton("Cookie Clicker", () => LoadGame("https://orteil.dashnet.org/cookieclicker/"));
-    CreateButton("1v1.lol", () => LoadGame("https://1v1lol-unblocked.net/"));
+CreateGameButton("Run 3", "https://map-l.github.io/play/run3/");
+CreateGameButton("Drive Mad", "https://ubg76.github.io/drive-mad/");
+CreateGameButton("Minecraft 1.12.2", "https://eaglercraft.com/mc/1.12/");
+CreateGameButton("Roblox", "https://now.gg/apps/roblox-corporation/5349/roblox.html");
+CreateGameButton("BitLife", "https://bitlifeonline.github.io/webgl/");
+CreateGameButton("Geometry Dash Lite", "https://gd.games/lite/");
+CreateGameButton("1v1.lol", "https://1v1.lol");
+CreateGameButton("Cookie Clicker", "https://orteil.dashnet.org/cookieclicker/");
+CreateGameButton("Slope", "https://ubg100.github.io/slope/");
+CreateGameButton("Retro Bowl", "https://retro-bowl.github.io/");
 }
 
 </script>
