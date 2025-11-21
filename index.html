@@ -87,6 +87,20 @@
             border-radius: 12px;
         }
 
+        .page {
+    display: none;
+}
+
+.page.active {
+    display: block;
+}
+
+#gameFrame {
+    width: 100%;
+    height: calc(100vh - 100px);
+    border-radius: 10px;
+    background: black;
+}
     </style>
 </head>
 <body>
@@ -104,10 +118,24 @@
         <h1>ESB's Toolbox</h1>
     </div>
 
-    <div class="main" id="main"></div>
+    <div class="main">
+    <div id="page-home" class="page active">
+        <h2>Welcome!</h2>
+        <p>Select a game to start playing.</p>
+    </div>
+
+    <div id="page-gameViewer" class="page">
+        <iframe id="gameFrame" src="" frameborder="0"></iframe>
+    </div>
+</div>
 
 <script>
-/* Pressed tab toggle */
+
+function showPage(id) {
+    document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
+    document.getElementById(id).classList.add('active');
+}
+    
 function selectTab(element) {
     document.querySelectorAll('.sidebar a')
         .forEach(a => a.classList.remove('active'));
@@ -148,10 +176,10 @@ function showHome() {
 
 function CreateGameButton(name, url) {
     CreateButton(name, () => {
-        window.location.href = "play.html?game=" + encodeURIComponent(url);
+        document.getElementById("gameFrame").src = url;
+        showPage("page-gameViewer");
     });
 }
-
 function showGames() {
     const main = document.getElementById("main");
     main.innerHTML = "<h2>Games</h2>";
