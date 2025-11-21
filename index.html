@@ -6,214 +6,160 @@
     <title>ESB's Help! — School Grades excell.</title>
 
     <style>
-        * {
+        body {
             margin: 0;
             padding: 0;
-            box-sizing: border-box;
             font-family: Arial, sans-serif;
-        }
-
-        body {
-            background: #0b0b14;
+            background: #0b0b18;
             color: white;
-            display: flex;
-            height: 100vh;
             overflow: hidden;
-        }
-
-        /* Sidebar */
-        .sidebar {
-            width: 240px;
-            background: #0e0e1a;
-            border-right: 1px solid #2d2d4d;
-            padding-top: 80px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            height: 100%;
-            box-shadow: 0 0 15px #5415ff33;
-        }
-
-        .sidebar a {
-            display: block;
-            padding: 15px 20px;
-            color: #d0c7ff;
-            text-decoration: none;
-            font-size: 17px;
-            transition: 0.2s;
-        }
-
-        .sidebar a.active {
-            background: #5415ff66;
-            color: white;
-            padding-left: 30px;
-            box-shadow: inset 0 0 15px #7c4dff;
         }
 
         /* Topbar */
         .topbar {
             width: 100%;
-            height: 70px;
-            position: fixed;
-            top: 0;
-            left: 0;
-            padding-left: 260px;
-            background: #121225;
+            height: 60px;
+            background: #0f0f24;
+            border-bottom: 2px solid #1a1a2d;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 0 15px #5415ff44;
-            z-index: 10;
+            position: relative;
         }
 
-        .topbar h1 {
-            font-size: 28px;
-            color: #bca8ff;
-            text-shadow: 0 0 10px #5415ff;
+        .topbar-box {
+            padding: 8px 25px;
+            background: #1a1a2d;
+            border-radius: 10px;
+            box-shadow: 0 0 20px #7c3aed;
+            font-size: 20px;
+            font-weight: bold;
+            color: #c084fc;
         }
 
-        /* Main page container */
+        /* Layout */
         .main {
-            margin-left: 260px;
-            margin-top: 80px;
-            padding: 20px;
-            height: calc(100vh - 80px);
-            overflow-y: auto;
+            display: flex;
+            width: 100%;
+            height: calc(100vh - 60px);
         }
 
-        .page {
-            display: none;
+        /* Sidebar */
+        .sidebar {
+            width: 200px;
+            background: #0f0f24;
+            border-right: 2px solid #1a1a2d;
+            padding-top: 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
         }
 
-        .page.active {
-            display: block;
-        }
-
-        /* Game button styling */
-        .gameBtn {
-            padding: 12px 22px;
-            background: #5415ff;
+        .sidebar button {
+            width: 100%;
+            padding: 12px 10px;
+            background: none;
             border: none;
-            border-radius: 8px;
+            text-align: left;
             color: white;
-            font-size: 16px;
+            font-size: 14px;
             cursor: pointer;
-            margin: 10px;
-            box-shadow: 0 0 10px #5415ff;
-            transition: 0.15s;
-        }
-        .gameBtn:hover {
-            background: #6a2bff;
-            box-shadow: 0 0 18px #7d47ff;
+            transition: 0.2s;
         }
 
-        /* Iframe Game Player */
+        .sidebar button:hover,
+        .sidebar button.active {
+            background: linear-gradient(90deg, #7c3aed, #3b1673);
+            box-shadow: inset 0 0 20px #7c3aed;
+        }
+
+        /* Content area */
+        .content {
+            flex-grow: 1;
+            padding: 20px;
+            overflow: hidden;
+            background: #0b0b18;
+        }
+
+        /* Game Viewer */
         #gameFrame {
             width: 100%;
-            height: calc(100vh - 120px);
-            background: black;
+            height: 100%;
             border: none;
+            background: black;
             border-radius: 12px;
+            box-shadow: 0 0 25px #3b1673;
+        }
+
+        .placeholder {
+            font-size: 28px;
+            opacity: 0.8;
         }
     </style>
 </head>
+
 <body>
 
-    <!-- Sidebar -->
-    <div class="sidebar">
-        <a onclick="selectTab(this); showHome()" class="active">Home</a>
-        <a onclick="selectTab(this); showGames()">Games</a>
-        <a onclick="selectTab(this)">AI</a>
-        <a onclick="selectTab(this)">YouTube</a>
-        <a onclick="selectTab(this)">Music Player</a>
-        <a onclick="selectTab(this)">Soundboard</a>
-    </div>
-
-    <!-- Topbar -->
+    <!-- TOPBAR -->
     <div class="topbar">
-        <h1>ESB's Toolbox</h1>
+        <div class="topbar-box">ESB's Toolbox</div>
     </div>
 
-    <!-- Main content -->
     <div class="main">
 
-        <!-- Home -->
-        <div id="page-home" class="page active">
-            <h2>Welcome!</h2>
-            <p>Select a game to start playing.</p>
+        <!-- SIDEBAR -->
+        <div class="sidebar">
+            <button onclick="loadSlide('home')">Home</button>
+            <button onclick="loadSlide('games')" id="gamesBtn">Games</button>
+            <button onclick="loadSlide('ai')">AI</button>
+            <button onclick="loadSlide('yt')">YouTube</button>
+            <button onclick="loadSlide('music')">Music Player</button>
+            <button onclick="loadSlide('soundboard')">Soundboard</button>
         </div>
 
-        <!-- Game Viewer -->
-        <div id="page-gameViewer" class="page">
-            <iframe id="gameFrame" src=""></iframe>
+        <!-- CONTENT -->
+        <div class="content" id="contentArea">
+            <div class="placeholder">Welcome! Select something from the sidebar.</div>
         </div>
-
-        <!-- Games Page -->
-        <div id="page-games" class="page"></div>
-
     </div>
 
-<script>
 
-// Switch pages
-function showPage(id) {
-    document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
-    document.getElementById(id).classList.add("active");
-}
+    <script>
+        function clearActive() {
+            document.querySelectorAll(".sidebar button").forEach(btn => {
+                btn.classList.remove("active");
+            });
+        }
 
-// Sidebar highlight
-function selectTab(element) {
-    document.querySelectorAll(".sidebar a").forEach(a => a.classList.remove("active"));
-    element.classList.add("active");
-}
+        function loadSlide(page) {
+            clearActive();
+            event.target.classList.add("active");
 
-// Show Home
-function showHome() {
-    showPage("page-home");
-}
+            let content = document.getElementById("contentArea");
 
-// Load game into iframe
-function LoadGame(embedHTML) {
-    document.getElementById("gameFrame").srcdoc = embedHTML;
-    showPage("page-gameViewer");
-}
+            if (page === "games") {
+                content.innerHTML = `
+                    <h2>Games</h2>
+                    <button onclick="loadGame('https://ubg76.com/slope')" style="margin-top:10px;">Play Slope</button><br><br>
+                    <button onclick="loadGame('https://ubg100.github.io/granny/')">Play Granny</button><br><br>
+                    <button onclick="loadGame('https://retrobowl2024.io/embed')">Play Retro Bowl</button>
+                `;
+            }
 
-// Creates a game button
-function CreateGameButton(name, embedHTML) {
-    const container = document.getElementById("page-games");
-    const btn = document.createElement("button");
-    btn.className = "gameBtn";
-    btn.textContent = name;
-    btn.onclick = () => LoadGame(embedHTML);
-    container.appendChild(btn);
-}
+            else if (page === "home") {
+                content.innerHTML = "<div class='placeholder'>Welcome back! Select something from the sidebar.</div>";
+            }
 
-// Show Games Page
-function showGames() {
-    const games = document.getElementById("page-games");
-    games.innerHTML = "<h2>Games</h2>";
+            else {
+                content.innerHTML = `<div class='placeholder'>${page.toUpperCase()} slide coming soon.</div>`;
+            }
+        }
 
-    /* EMBEDDED GAME HTML SNIPPETS */
-    const grannyEmbed = `
-        <html><body style='margin:0'>
-        <iframe src="https://map-l.github.io/play/granny/" style="border:0;width:100%;height:100%"></iframe>
-        </body></html>
-    `;
-
-    const driveMadEmbed = `
-        <html><body style='margin:0'>
-        <iframe src="https://ubg76.github.io/drive-mad/" style="border:0;width:100%;height:100%"></iframe>
-        </body></html>
-    `;
-
-    /* Add buttons */
-    CreateGameButton("Granny", grannyEmbed);
-    CreateGameButton("Drive Mad", driveMadEmbed);
-
-    showPage("page-games");
-}
-
-</script>
+        function loadGame(url) {
+            let content = document.getElementById("contentArea");
+            content.innerHTML = `<iframe id="gameFrame" src="${url}"></iframe>`;
+        }
+    </script>
 
 </body>
 </html>
