@@ -116,30 +116,6 @@
 
     <div class="main">
         <button onclick="testButton()" style="padding:10px 20px;background:#5415ff;border:none;border-radius:8px;color:white;font-size:16px;cursor:pointer;box-shadow:0 0 10px #5415ff;">Test Button</button>
-        <div class="card" id="ai">
-            <h3>AI</h3>
-            <p>This is where the AI tools will go.</p>
-        </div>
-
-        <div class="card" id="games">
-            <h3>Games</h3>
-            <p>This section will hold your unblocked games UI.</p>
-        </div>
-
-        <div class="card" id="yt">
-            <h3>YouTube</h3>
-            <p>YouTube embed player or proxy system UI goes here.</p>
-        </div>
-
-        <div class="card" id="music">
-            <h3>Music Player</h3>
-            <p>Your audio system (tab-based playback) will be here.</p>
-        </div>
-
-        <div class="card" id="soundboard">
-            <h3>Soundboard</h3>
-            <p>Soundboard UI will be placed here.</p>
-        </div>
     </div>
     <script>
         function CreateButton(text, callback) {
@@ -155,7 +131,7 @@
             btn.style.cursor = "pointer";
             btn.style.boxShadow = "0 0 10px #5415ff";
             btn.style.margin = "10px";
-            doc
+            document.querySelector('.main').appendChild(btn);
         function testButton() {
             alert('Button works!');
         }
