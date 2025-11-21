@@ -50,7 +50,7 @@
             box-shadow: inset 0 0 15px #7c4dff;
         }
 
-        /* TOPBAR */
+        /* Topbar */
         .topbar {
             width: 100%;
             height: 70px;
@@ -58,30 +58,21 @@
             top: 0;
             left: 0;
             padding-left: 260px;
+            background: #121225;
             display: flex;
             align-items: center;
-            justify-content: flex-start;
-            background: #121225;
+            justify-content: center;
             box-shadow: 0 0 15px #5415ff44;
             z-index: 10;
         }
 
-        /* Glowing topbar box */
-        .topbar-box {
-            padding: 10px 25px;
-            background: #1b1b2e;
-            border-radius: 10px;
-            box-shadow: 0 0 15px #5415ff99;
-        }
-
-        .topbar-box h1 {
-            font-size: 25px;
+        .topbar h1 {
+            font-size: 28px;
             color: #bca8ff;
             text-shadow: 0 0 10px #5415ff;
-            margin: 0;
         }
 
-        /* Main content */
+        /* Main page container */
         .main {
             margin-left: 260px;
             margin-top: 80px;
@@ -98,33 +89,39 @@
             display: block;
         }
 
-        iframe {
-            width: 100%;
-            height: calc(100vh - 120px);
-            border: none;
-            border-radius: 12px;
-        }
-
-        /* Buttons */
-        .game-btn {
-            padding: 12px 20px;
+        /* Game button styling */
+        .gameBtn {
+            padding: 12px 22px;
             background: #5415ff;
             border: none;
             border-radius: 8px;
             color: white;
             font-size: 16px;
             cursor: pointer;
-            box-shadow: 0 0 15px #5415ff;
-            margin: 10px 10px 0 0;
+            margin: 10px;
+            box-shadow: 0 0 10px #5415ff;
+            transition: 0.15s;
+        }
+        .gameBtn:hover {
+            background: #6a2bff;
+            box-shadow: 0 0 18px #7d47ff;
+        }
+
+        /* Iframe Game Player */
+        #gameFrame {
+            width: 100%;
+            height: calc(100vh - 120px);
+            background: black;
+            border: none;
+            border-radius: 12px;
         }
     </style>
 </head>
-
 <body>
 
-    <!-- SIDEBAR -->
+    <!-- Sidebar -->
     <div class="sidebar">
-        <a onclick="selectTab(this); showHome()">Home</a>
+        <a onclick="selectTab(this); showHome()" class="active">Home</a>
         <a onclick="selectTab(this); showGames()">Games</a>
         <a onclick="selectTab(this)">AI</a>
         <a onclick="selectTab(this)">YouTube</a>
@@ -132,79 +129,91 @@
         <a onclick="selectTab(this)">Soundboard</a>
     </div>
 
-    <!-- TOPBAR -->
+    <!-- Topbar -->
     <div class="topbar">
-        <div class="topbar-box">
-            <h1>ESB's Toolbox</h1>
-        </div>
+        <h1>ESB's Toolbox</h1>
     </div>
 
-    <!-- MAIN CONTENT (NOW FIXED WITH id="main") -->
-    <div id="main" class="main">
+    <!-- Main content -->
+    <div class="main">
 
+        <!-- Home -->
         <div id="page-home" class="page active">
             <h2>Welcome!</h2>
             <p>Select a game to start playing.</p>
         </div>
 
+        <!-- Game Viewer -->
         <div id="page-gameViewer" class="page">
             <iframe id="gameFrame" src=""></iframe>
         </div>
 
+        <!-- Games Page -->
+        <div id="page-games" class="page"></div>
+
     </div>
 
-    <script>
-        function showPage(id) {
-            document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
-            document.getElementById(id).classList.add('active');
-        }
+<script>
 
-        function selectTab(element) {
-            document.querySelectorAll('.sidebar a')
-                .forEach(a => a.classList.remove('active'));
-            element.classList.add('active');
-        }
+// Switch pages
+function showPage(id) {
+    document.querySelectorAll(".page").forEach(p => p.classList.remove("active"));
+    document.getElementById(id).classList.add("active");
+}
 
-        function CreateButton(text, callback) {
-            const btn = document.createElement("button");
-            btn.textContent = text;
-            btn.className = "game-btn";
-            btn.onclick = callback;
-            document.getElementById("main").appendChild(btn);
-        }
+// Sidebar highlight
+function selectTab(element) {
+    document.querySelectorAll(".sidebar a").forEach(a => a.classList.remove("active"));
+    element.classList.add("active");
+}
 
-        function CreateGameButton(name, url) {
-            CreateButton(name, () => {
-                document.getElementById("gameFrame").src = url;
-                showPage("page-gameViewer");
-            });
-        }
+// Show Home
+function showHome() {
+    showPage("page-home");
+}
 
-        function showHome() {
-            const main = document.getElementById("main");
-            main.innerHTML = `
-                <h2>Welcome!</h2>
-                <p>Select a game to start playing.</p>
-            `;
-            showPage("page-home");
-        }
+// Load game into iframe
+function LoadGame(embedHTML) {
+    document.getElementById("gameFrame").srcdoc = embedHTML;
+    showPage("page-gameViewer");
+}
 
-        function showGames() {
-            const main = document.getElementById("main");
-            main.innerHTML = "<h2>Games</h2>";
+// Creates a game button
+function CreateGameButton(name, embedHTML) {
+    const container = document.getElementById("page-games");
+    const btn = document.createElement("button");
+    btn.className = "gameBtn";
+    btn.textContent = name;
+    btn.onclick = () => LoadGame(embedHTML);
+    container.appendChild(btn);
+}
 
-            CreateGameButton("Run 3", "https://map-l.github.io/play/run3/");
-            CreateGameButton("Drive Mad", "https://ubg76.github.io/drive-mad/");
-            CreateGameButton("Minecraft 1.12.2", "https://eaglercraft.com/mc/1.12/");
-            CreateGameButton("Roblox", "https://now.gg/apps/roblox-corporation/5349/roblox.html");
-            CreateGameButton("BitLife", "https://bitlifeonline.github.io/webgl/");
-            CreateGameButton("Geometry Dash Lite", "https://gd.games/lite/");
-            CreateGameButton("1v1.lol", "https://1v1.lol");
-            CreateGameButton("Cookie Clicker", "https://orteil.dashnet.org/cookieclicker/");
-            CreateGameButton("Slope", "https://ubg100.github.io/slope/");
-            CreateGameButton("Retro Bowl", "https://retro-bowl.github.io/");
-        }
-    </script>
+// Show Games Page
+function showGames() {
+    const games = document.getElementById("page-games");
+    games.innerHTML = "<h2>Games</h2>";
+
+    /* EMBEDDED GAME HTML SNIPPETS */
+    const grannyEmbed = `
+        <html><body style='margin:0'>
+        <iframe src="https://map-l.github.io/play/granny/" style="border:0;width:100%;height:100%"></iframe>
+        </body></html>
+    `;
+
+    const driveMadEmbed = `
+        <html><body style='margin:0'>
+        <iframe src="https://ubg76.github.io/drive-mad/" style="border:0;width:100%;height:100%"></iframe>
+        </body></html>
+    `;
+
+    /* Add buttons */
+    CreateGameButton("Granny", grannyEmbed);
+    CreateGameButton("Drive Mad", driveMadEmbed);
+
+    showPage("page-games");
+}
+
+</script>
 
 </body>
 </html>
