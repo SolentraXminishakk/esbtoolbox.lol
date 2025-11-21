@@ -118,23 +118,26 @@
         <button onclick="testButton()" style="padding:10px 20px;background:#5415ff;border:none;border-radius:8px;color:white;font-size:16px;cursor:pointer;box-shadow:0 0 10px #5415ff;">Test Button</button>
     </div>
     <script>
-        function CreateButton(text, callback) {
-            const btn = document.createElement('button');
-            btn.textContent = text;
-            btn.onclick = callback;
-            btn.style.padding = "10px 20px";
-            btn.style.background = "#5415ff";
-            btn.style.border = "none";
-            btn.style.borderRadius = "8px";
-            btn.style.color = "white";
-            btn.style.fontSize = "16px";
-            btn.style.cursor = "pointer";
-            btn.style.boxShadow = "0 0 10px #5415ff";
-            btn.style.margin = "10px";
-            document.querySelector('.main').appendChild(btn);
-        function testButton() {
-            alert('Button works!');
-        }
-    </script>
+    function CreateButton(text, callback) {
+        const btn = document.createElement('button');
+        btn.textContent = text;
+        btn.onclick = callback;
+        btn.style.padding = "10px 20px";
+        btn.style.background = "#5415ff";
+        btn.style.border = "none";
+        btn.style.borderRadius = "8px";
+        btn.style.color = "white";
+        btn.style.fontSize = "16px";
+        btn.style.cursor = "pointer";
+        btn.style.boxShadow = "0 0 10px #5415ff";
+        btn.style.margin = "10px";
+
+        document.querySelector('.main').appendChild(btn);
+    }
+
+    function testButton() {
+        alert('Button works!');
+    }
+</script>
 </body>
 </html>
