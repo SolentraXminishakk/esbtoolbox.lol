@@ -42,7 +42,6 @@
             transition: 0.2s;
         }
 
-        /* ACTIVE (pressed) state */
         .sidebar a.active {
             background: #5415ff66;
             color: white;
@@ -71,7 +70,7 @@
             text-shadow: 0 0 10px #5415ff;
         }
 
-        /* Main */
+        /* Main content */
         .main {
             margin-left: 260px;
             margin-top: 80px;
@@ -80,34 +79,36 @@
             overflow: hidden;
         }
 
-        iframe {
+        /* Pages */
+        .page { display: none; }
+        .page.active { display: block; }
+
+        #gameContainer {
             width: 100%;
-            height: 100%;
-            border: none;
+            height: calc(100vh - 120px);
+            background: black;
             border-radius: 12px;
         }
 
-        .page {
-    display: none;
-}
-
-.page.active {
-    display: block;
-}
-
-#gameFrame {
-    width: 100%;
-    height: calc(100vh - 100px);
-    border-radius: 10px;
-    background: black;
-}
+        button {
+            padding: 10px 20px;
+            background: #5415ff;
+            border: none;
+            border-radius: 8px;
+            color: white;
+            font-size: 16px;
+            cursor: pointer;
+            box-shadow: 0 0 10px #5415ff;
+            margin: 10px;
+        }
     </style>
 </head>
+
 <body>
 
     <div class="sidebar">
-        <a onclick="selectTab(this); showHome()">Home</a>
-        <a onclick="selectTab(this); showGames()">Games</a>
+        <a onclick="selectTab(this); showPage('homePage')">Home</a>
+        <a onclick="selectTab(this); showPage('gamesPage')">Games</a>
         <a onclick="selectTab(this)">AI</a>
         <a onclick="selectTab(this)">YouTube</a>
         <a onclick="selectTab(this)">Music Player</a>
@@ -119,82 +120,74 @@
     </div>
 
     <div class="main">
-    <div id="page-home" class="page active">
-        <h2>Welcome!</h2>
-        <p>Select a game to start playing.</p>
-    </div>
 
-    <div id="page-gameViewer" class="page">
-        <iframe id="gameFrame" src="" frameborder="0"></iframe>
+        <!-- HOME PAGE -->
+        <div id="homePage" class="page active">
+            <h2>Welcome!</h2>
+            <p>Select a section from the left sidebar.</p>
+        </div>
+
+        <!-- GAMES PAGE -->
+        <div id="gamesPage" class="page">
+            <h2>Games</h2>
+            <div id="gameButtons"></div>
+        </div>
+
+        <!-- GAME VIEWER PAGE -->
+        <div id="gameViewerPage" class="page">
+            <button onclick="BackToGames()">⬅ Back</button>
+            <div id="gameContainer"></div>
+        </div>
+
     </div>
-</div>
 
 <script>
 
+// Page system
 function showPage(id) {
     document.querySelectorAll('.page').forEach(p => p.classList.remove('active'));
     document.getElementById(id).classList.add('active');
 }
-    
-function selectTab(element) {
+
+function selectTab(el) {
     document.querySelectorAll('.sidebar a')
         .forEach(a => a.classList.remove('active'));
-    element.classList.add('active');
+    el.classList.add('active');
 }
 
-/* Game embed loader */
-function LoadGame(url) {
-    document.getElementById("main").innerHTML = `
-        <iframe src="${url}"></iframe>
-    `;
+// Add a button to Games page
+function AddGameButton(name, embedHTML) {
+    const btn = document.createElement("button");
+    btn.textContent = name;
+    btn.onclick = () => LoadEmbed(embedHTML);
+    document.getElementById("gameButtons").appendChild(btn);
 }
 
-/* Homepage button generator */
-function CreateButton(text, callback) {
-    const btn = document.createElement('button');
-    btn.textContent = text;
-    btn.onclick = callback;
-    btn.style.padding = "10px 20px";
-    btn.style.background = "#5415ff";
-    btn.style.border = "none";
-    btn.style.borderRadius = "8px";
-    btn.style.color = "white";
-    btn.style.fontSize = "16px";
-    btn.style.cursor = "pointer";
-    btn.style.boxShadow = "0 0 10px #5415ff";
-    btn.style.margin = "10px";
-
-    document.getElementById("main").appendChild(btn);
+// Load EMBED HTML into the game viewer
+function LoadEmbed(html) {
+    showPage('gameViewerPage');
+    document.getElementById("gameContainer").innerHTML = html;
 }
 
-/* Pages */
-function showHome() {
-    const main = document.getElementById("main");
-    main.innerHTML = "";
-    main.innerHTML = "<h2>Welcome to ESB's Toolbox</h2>";
+function BackToGames() {
+    showPage("gamesPage");
+    document.getElementById("gameContainer").innerHTML = "";
 }
 
-function CreateGameButton(name, url) {
-    CreateButton(name, () => {
-        document.getElementById("gameFrame").src = url;
-        showPage("page-gameViewer");
-    });
-}
-function showGames() {
-    const main = document.getElementById("main");
-    main.innerHTML = "<h2>Games</h2>";
+/* ------------------------------
+   ADD YOUR EMBEDS HERE
+--------------------------------*/
 
-CreateGameButton("Run 3", "https://map-l.github.io/play/run3/");
-CreateGameButton("Drive Mad", "https://ubg76.github.io/drive-mad/");
-CreateGameButton("Minecraft 1.12.2", "https://eaglercraft.com/mc/1.12/");
-CreateGameButton("Roblox", "https://now.gg/apps/roblox-corporation/5349/roblox.html");
-CreateGameButton("BitLife", "https://bitlifeonline.github.io/webgl/");
-CreateGameButton("Geometry Dash Lite", "https://gd.games/lite/");
-CreateGameButton("1v1.lol", "https://1v1.lol");
-CreateGameButton("Cookie Clicker", "https://orteil.dashnet.org/cookieclicker/");
-CreateGameButton("Slope", "https://ubg100.github.io/slope/");
-CreateGameButton("Retro Bowl", "https://retro-bowl.github.io/");
-}
+// Example Granny embed
+const GrannyEmbed = `
+<iframe id="innerFrame" 
+sandbox="allow-scripts allow-popups allow-forms allow-same-origin allow-popups-to-escape-sandbox allow-downloads allow-storage-access-by-user-activation"
+style="height:100%;width:100%;border:none;"
+src="https://map-l.github.io/play/granny/"></iframe>
+`;
+
+/* Register games */
+AddGameButton("Granny", GrannyEmbed);
 
 </script>
 
